@@ -21,6 +21,7 @@ namespace ActiveAzureAcademy.Lab.Multiregion
             services.AddMvc();
             services.Configure<RegionConfiguration>(Configuration);
             services.Configure<StaticFilesConfiguration>(Configuration);
+            services.AddCors();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -29,6 +30,12 @@ namespace ActiveAzureAcademy.Lab.Multiregion
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(config =>
+            {
+                config.AllowAnyOrigin();
+                config.WithMethods(HttpMethods.Get);
+            });
 
             app.UseStaticFiles(new StaticFileOptions
             {
