@@ -23,27 +23,23 @@
 
 <h3>JSON</h3>
 <p>
-    <strong>JSON url: </strong> @StaticFilesConfig.Value.BaseUrl/static_json_data.json
-    <strong>JSON fetch time: </strong> <span id="StaticJsonFetchTime">-</span><br/>
-    <strong>JSON content:</strong> <span id="StaticJsonFetchContent"></span>
+    <strong>JSON url(s): </strong> @StaticFilesConfig.Value.BaseUrl/json_X.json<br />
+    <strong>JSON total fetch time (10 files): </strong> <span id="StaticJsonFetchTime">-</span>
 </p>
 <script>
     (function () {
 
         var timeStart = performance.now();
-        var timeEnd;
-
-        fetch('@StaticFilesConfig.Value.BaseUrl/static_json_data.json', { cache: "no-store" })
-            .then(function (response) {
-                timeEnd = performance.now();
-                return response.json();
-            })
-            .then(function (json) {
-                var timeMs = timeEnd - timeStart;
-                document.querySelector('#StaticJsonFetchTime').innerText = timeMs + ' ms';
-                document.querySelector('#StaticJsonFetchContent').innerText = JSON.stringify(json);
-            });
-
+        var promises = [];
+        for (var i = 0; i < 10; i++) {
+            var promise = fetch('@StaticFilesConfig.Value.BaseUrl/json_' + i + '.json', { cache: "no-store" });
+            promises.push(promise);
+        }
+        Promise.all(promises).then(function(response) {
+            var timeEnd = performance.now();
+            var timeMs = timeEnd - timeStart;
+            document.querySelector('#StaticJsonFetchTime').innerText = timeMs + ' ms';
+        });
     }());
 </script>
 
