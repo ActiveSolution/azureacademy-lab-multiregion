@@ -1,0 +1,45 @@
+﻿@using ActiveAzureAcademy.Lab.Multiregion.Configuration
+@using Microsoft.Extensions.Options
+@model ActiveAzureAcademy.Lab.Multiregion.Models.HomeViewModel
+@inject IOptions<StaticFilesConfiguration> StaticFilesConfig
+
+@{
+    Layout = "_Layout";
+}
+
+<h1>Active Azure Academy - Lab - Multiregion</h1>
+
+<h2>Region</h2>
+<p>
+    <strong>This site runs in: </strong> @Model.Location<br />
+    <strong>The local servet time is: </strong> @Model.LocalTime
+</p>
+
+<h2>Static files</h2>
+<h3>JSON</h3>
+<p>
+    <strong>Static JSON fetch time: </strong> <span id="StaticJsonFetchTime">-</span><br />
+    <strong>Static JSON content:</strong> <span id="StaticJsonFetchContent"></span>
+</p>
+<script>
+    (function () {
+
+        var timeStart = performance.now();
+        var timeEnd;
+
+        fetch('@StaticFilesConfig.Value.BaseUrl/static_json_data.json')
+            .then(function (response) {
+                timeEnd = performance.now();
+                return response.json();
+            })
+            .then(function (json) {
+                var timeMs = timeEnd - timeStart;
+                document.querySelector('#StaticJsonFetchTime').innerText = timeMs + ' ms';
+                document.querySelector('#StaticJsonFetchContent').innerText = JSON.stringify(json);
+            });
+
+    }());
+</script>
+
+<h3>Image</h3>
+<img src="@StaticFilesConfig.Value.BaseUrl/active_lego.jpg" alt="Active Solution Lego" class="img-fluid" />
