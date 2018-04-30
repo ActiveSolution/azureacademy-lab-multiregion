@@ -27,7 +27,7 @@
         var timeStart = performance.now();
         var timeEnd;
 
-        fetch('@StaticFilesConfig.Value.BaseUrl/static_json_data.json')
+        fetch('@StaticFilesConfig.Value.BaseUrl/static_json_data.json', { cache: "no-store" })
             .then(function (response) {
                 timeEnd = performance.now();
                 return response.json();
