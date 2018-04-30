@@ -23,8 +23,9 @@
 
 <h3>JSON</h3>
 <p>
-    <strong>Static JSON fetch time: </strong> <span id="StaticJsonFetchTime">-</span><br />
-    <strong>Static JSON content:</strong> <span id="StaticJsonFetchContent"></span>
+    <strong>JSON url: </strong> @StaticFilesConfig.Value.BaseUrl/static_json_data.json
+    <strong>JSON fetch time: </strong> <span id="StaticJsonFetchTime">-</span><br/>
+    <strong>JSON content:</strong> <span id="StaticJsonFetchContent"></span>
 </p>
 <script>
     (function () {
@@ -47,4 +48,7 @@
 </script>
 
 <h3>Image</h3>
+<p>
+    <strong>Image url: </strong> @StaticFilesConfig.Value.BaseUrl/active_lego.jpg
+</p>
 <img src="@StaticFilesConfig.Value.BaseUrl/active_lego.jpg" alt="Active Solution Lego" class="img-fluid" />
