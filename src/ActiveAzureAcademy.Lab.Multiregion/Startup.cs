@@ -19,9 +19,10 @@ namespace ActiveAzureAcademy.Lab.Multiregion
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddCors();
+
             services.Configure<RegionConfiguration>(Configuration);
             services.Configure<StaticFilesConfiguration>(Configuration);
-            services.AddCors();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
