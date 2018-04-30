@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  activeazureacademy.lab.multiregion:
+    image: activeazureacademylabmultiregion
+    build:
+      context: .
+      dockerfile: src/ActiveAzureAcademy.Lab.Multiregion/Dockerfile
