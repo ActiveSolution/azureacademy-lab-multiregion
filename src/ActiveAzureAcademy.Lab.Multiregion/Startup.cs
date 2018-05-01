@@ -19,6 +19,8 @@ namespace ActiveAzureAcademy.Lab.Multiregion
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddCors();
+
             services.Configure<RegionConfiguration>(Configuration);
             services.Configure<StaticFilesConfiguration>(Configuration);
         }
@@ -29,6 +31,12 @@ namespace ActiveAzureAcademy.Lab.Multiregion
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(config =>
+            {
+                config.AllowAnyOrigin();
+                config.WithMethods(HttpMethods.Get);
+            });
 
             app.UseStaticFiles(new StaticFileOptions
             {

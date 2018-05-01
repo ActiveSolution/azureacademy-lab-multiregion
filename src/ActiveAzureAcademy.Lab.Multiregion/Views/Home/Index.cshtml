@@ -12,34 +12,39 @@
 <h2>Region</h2>
 <p>
     <strong>This site runs in: </strong> @Model.Location<br />
-    <strong>The local servet time is: </strong> @Model.LocalTime
+    <strong>The local server time is: </strong> @Model.LocalTime
 </p>
 
 <h2>Static files</h2>
+
+<p>
+    <strong>Base url: </strong> @StaticFilesConfig.Value.BaseUrl
+</p>
+
 <h3>JSON</h3>
 <p>
-    <strong>Static JSON fetch time: </strong> <span id="StaticJsonFetchTime">-</span><br />
-    <strong>Static JSON content:</strong> <span id="StaticJsonFetchContent"></span>
+    <strong>JSON url(s): </strong> @StaticFilesConfig.Value.BaseUrl/json_X.json<br />
+    <strong>JSON total fetch time (10 files): </strong> <span id="StaticJsonFetchTime">-</span>
 </p>
 <script>
     (function () {
 
         var timeStart = performance.now();
-        var timeEnd;
-
-        fetch('@StaticFilesConfig.Value.BaseUrl/static_json_data.json')
-            .then(function (response) {
-                timeEnd = performance.now();
-                return response.json();
-            })
-            .then(function (json) {
-                var timeMs = timeEnd - timeStart;
-                document.querySelector('#StaticJsonFetchTime').innerText = timeMs + ' ms';
-                document.querySelector('#StaticJsonFetchContent').innerText = JSON.stringify(json);
-            });
-
+        var promises = [];
+        for (var i = 0; i < 10; i++) {
+            var promise = fetch('@StaticFilesConfig.Value.BaseUrl/json_' + i + '.json', { cache: "no-store" });
+            promises.push(promise);
+        }
+        Promise.all(promises).then(function(response) {
+            var timeEnd = performance.now();
+            var timeMs = timeEnd - timeStart;
+            document.querySelector('#StaticJsonFetchTime').innerText = timeMs + ' ms';
+        });
     }());
 </script>
 
 <h3>Image</h3>
+<p>
+    <strong>Image url: </strong> @StaticFilesConfig.Value.BaseUrl/active_lego.jpg
+</p>
 <img src="@StaticFilesConfig.Value.BaseUrl/active_lego.jpg" alt="Active Solution Lego" class="img-fluid" />
